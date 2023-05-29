@@ -1,4 +1,4 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import Prism from "prismjs";
 import { Button, message } from "antd";
 import "prismjs/components/prism-javascript"; // 对 JavaScript 高亮
@@ -22,7 +22,7 @@ const ShowContent: React.FC<ShowContentProps> = ({ content }) => {
     // 确保找到了pre标签
     if (preElement) {
       let text = preElement.textContent;
-      const phrasesToBreak = ["内容如下","问题描述如下", "代码如下"];
+      const phrasesToBreak = ["内容如下", "问题描述如下", "代码如下"];
       phrasesToBreak.forEach((phrase) => {
         const regex = new RegExp(phrase, "g");
         text = text.replace(regex, `${phrase}\n`);
@@ -50,17 +50,19 @@ const ShowContent: React.FC<ShowContentProps> = ({ content }) => {
   return (
     <>
       <Button onClick={copyPreContent}> 复制</Button>
-      {contextHolder}
-      <pre id="gfc">
-        <div>
-          现在你是{content.language}
-          大师,请你用严谨安全的方式来帮我解决问题,可以对代码进行修改 内容如下
-        </div>
-        <div>问题描述如下</div>
-        <ReactMarkdown>{content.desc}</ReactMarkdown>
-        <div>代码如下</div>
-        <code className={`language-${content.language}`}>{content.code}</code>
-      </pre>
+      <section className="w-full flex flex-col  justify-center">
+        {contextHolder}
+        <pre id="gfc">
+          <div>
+            现在你是{content.language}
+            大师,请你来帮我解决问题,可以对代码进行修改 内容如下
+          </div>
+          <div>问题描述如下</div>
+          <ReactMarkdown>{content.desc}</ReactMarkdown>
+          <div>代码如下</div>
+          <code className={`language-${content.language}`}>{content.code}</code>
+        </pre>
+      </section>
     </>
   );
 };

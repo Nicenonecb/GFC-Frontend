@@ -12,7 +12,6 @@ type ConfigPartProps = {
   onGenerateContent: (newContent: object) => void;
 };
 const ConfigPart: React.FC<ConfigPartProps> = ({ onGenerateContent }) => {
-  const [form] = Form.useForm();
   const [lang, setLang] = useState("");
   const [codeContent, setCodeContent] = useState("");
   const [descContent, setDescContent] = useState("");
@@ -78,54 +77,65 @@ const ConfigPart: React.FC<ConfigPartProps> = ({ onGenerateContent }) => {
     };
     onGenerateContent(contentObj);
   };
+  const clearContent = () => {
+    setDescContent("");
+    setCodeContent("");
+  };
   return (
-    <Form layout="vertical" form={form}>
-      <Form.Item name="lang" label="选择你使用的语言">
-        <Select placeholder="选择你使用的语言" onChange={handleChange}>
+    <>
+      <div className="flex gap-2 mb-5 mt-5 w-[200px]">
+        <Button onClick={generateContent}>生成</Button>
+        <Button onClick={clearContent}>清空</Button>
+      </div>
+
+      <div className="h-full w-[200px] mb-[15px] ">
+        <Select
+          placeholder="选择你使用的语言"
+          onChange={handleChange}
+          className="w-[200px]"
+
+        >
           {langOptions.map((option) => (
             <Option key={option.value} value={option.value}>
               {option.label}
             </Option>
           ))}
         </Select>
-      </Form.Item>
+      </div>
+      <section className=" w-full grid grid-cols-2 gap-10   ">
+        <div>
+          <AceEditor
+            placeholder="在这里贴您的描述"
+            mode="java"
+            theme="github"
+            name="blah2"
+            onChange={codeEditorChange}
+            fontSize={14}
+            showPrintMargin={true}
+            showGutter={true}
+            highlightActiveLine={true}
+            value={codeContent}
+            setOptions={{
+              enableBasicAutocompletion: true,
+              enableLiveAutocompletion: true,
+              enableSnippets: false,
+              showLineNumbers: true,
+              tabSize: 2,
+            }}
+          />
+        </div>
 
-      <Form.Item name="editor" label="代码">
-        <AceEditor
-          placeholder="在这里贴您的代码"
-          mode="java"
-          theme="github"
-          name="blah2"
-          onChange={codeEditorChange}
-          fontSize={14}
-          showPrintMargin={true}
-          showGutter={true}
-          highlightActiveLine={true}
-          value={codeContent}
-          setOptions={{
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: false,
-            showLineNumbers: true,
-            tabSize: 2,
-          }}
-        />
-      </Form.Item>
-
-      <Form.Item label="问题描述">
-        <SimpleMdeReact
-          options={autofocusNoSpellcheckerOptions}
-          value={descContent}
-          placeholder={"在这里贴您的代码"}
-          events={events}
-          onChange={mdChange}
-        />
-      </Form.Item>
-
-      <Form.Item>
-        <Button onClick={generateContent}>生成</Button>
-      </Form.Item>
-    </Form>
+        <div className="h-[200px]">
+          <SimpleMdeReact
+            options={autofocusNoSpellcheckerOptions}
+            value={descContent}
+            placeholder={"在这里贴您的描述"}
+            events={events}
+            onChange={mdChange}
+          />
+        </div>
+      </section>
+    </>
   );
 };
 
